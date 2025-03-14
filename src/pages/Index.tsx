@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ChevronRight, Zap, Shield, Clock, BarChart } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
+import LanguageToggle from "@/components/ui/LanguageToggle";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -65,7 +66,7 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-[calc(100vh-64px)] flex flex-col items-center justify-center p-4 md:p-8 relative">
+    <div className="min-h-screen flex flex-col relative">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div 
@@ -94,92 +95,148 @@ const Index = () => {
         />
       </div>
       
-      <motion.div 
-        className="max-w-4xl w-full mx-auto text-center z-10"
-        initial="hidden"
-        animate="show"
-        variants={container}
-      >
-        <motion.div
-          variants={item}
-          className="inline-block px-4 py-1.5 mb-6 rounded-full bg-secondary/50 backdrop-blur-md border border-border/50"
-        >
-          <span className="text-sm font-medium text-foreground">
-            {language === 'en' ? '✨ Welcome to Project Pulse' : '✨ Bienvenido a Project Pulse'}
-          </span>
-        </motion.div>
-        
-        <motion.h1 
-          variants={item}
-          className="text-4xl md:text-6xl font-bold mb-6 glow-text-primary tracking-tight"
-        >
-          <span className="text-gradient-primary">
-            {language === 'en' ? 'Supercharge your' : 'Potencia tu'}
-          </span>
-          <br />
-          {language === 'en' ? 'productivity workflow' : 'flujo de productividad'}
-        </motion.h1>
-        
-        <motion.p 
-          variants={item}
-          className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto"
-        >
-          {language === 'en' 
-            ? 'A powerful, intuitive platform for managing your projects and tasks with advanced analytics and progress tracking.'
-            : 'Una plataforma potente e intuitiva para gestionar tus proyectos y tareas con análisis avanzados y seguimiento de progreso.'}
-        </motion.p>
-        
+      {/* Navigation */}
+      <header className="relative z-10 p-4 md:p-6 flex justify-between items-center">
         <motion.div 
-          variants={item}
-          className="flex flex-wrap gap-4 justify-center mb-16"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="flex items-center"
         >
-          <Button
-            onClick={() => navigate('/dashboard')}
-            size="lg"
-            className="relative group overflow-hidden"
-          >
-            <span className="relative z-10 flex items-center">
-              {language === 'en' ? 'Get Started' : 'Comenzar'} 
-              <ChevronRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </span>
-            <motion.div 
-              className="absolute inset-0 bg-primary"
-              initial={false}
-              animate={{ scale: 1 }}
-              whileHover={{ scale: 1.1 }}
-              transition={{ duration: 0.2 }}
-            />
-          </Button>
-          
-          <Button
-            onClick={() => navigate('/projects')}
-            variant="outline"
-            size="lg"
-            className="border-primary/50 hover:border-primary/80 transition-colors"
-          >
-            {language === 'en' ? 'View Projects' : 'Ver Proyectos'}
-          </Button>
+          <h1 className="text-2xl font-bold text-gradient-primary">Execute</h1>
         </motion.div>
         
-        <motion.div
-          variants={item}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6"
-        >
-          {features.map((feature, i) => (
-            <motion.div
-              key={i}
-              className="bg-secondary/30 backdrop-blur-md border border-border/30 p-6 rounded-xl hover:glow-border-primary transition-all duration-300"
-              whileHover={{ y: -5, transition: { duration: 0.2 } }}
+        <div className="flex items-center space-x-4">
+          <LanguageToggle />
+          
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="flex items-center space-x-2"
+          >
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => navigate("/login")}
+              className="px-4 py-2 text-sm bg-transparent hover:bg-secondary/40 rounded-md transition-colors"
             >
-              <div className="rounded-full bg-background/60 w-10 h-10 flex items-center justify-center mb-4">
-                {feature.icon}
-              </div>
-              <h3 className="text-lg font-medium mb-2">{feature.title}</h3>
-              <p className="text-muted-foreground">{feature.description}</p>
-            </motion.div>
-          ))}
+              {language === 'en' ? 'Sign In' : 'Iniciar Sesión'}
+            </motion.button>
+            
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => navigate("/register")}
+              className="px-4 py-2 text-sm bg-primary text-white rounded-md hover:bg-primary/90 transition-colors"
+            >
+              {language === 'en' ? 'Register' : 'Registrarse'}
+            </motion.button>
+          </motion.div>
+        </div>
+      </header>
+      
+      <div className="flex-1 flex flex-col items-center justify-center p-4 md:p-8">
+        <motion.div 
+          className="max-w-4xl w-full mx-auto text-center z-10"
+          initial="hidden"
+          animate="show"
+          variants={container}
+        >
+          <motion.div
+            variants={item}
+            className="inline-block px-4 py-1.5 mb-6 rounded-full bg-secondary/50 backdrop-blur-md border border-border/50"
+          >
+            <span className="text-sm font-medium text-foreground">
+              {language === 'en' ? '✨ Welcome to Execute' : '✨ Bienvenido a Execute'}
+            </span>
+          </motion.div>
+          
+          <motion.h1 
+            variants={item}
+            className="text-4xl md:text-6xl font-bold mb-6 glow-text-primary tracking-tight"
+          >
+            <span className="text-gradient-primary">
+              {language === 'en' ? 'Supercharge your' : 'Potencia tu'}
+            </span>
+            <br />
+            {language === 'en' ? 'productivity workflow' : 'flujo de productividad'}
+          </motion.h1>
+          
+          <motion.p 
+            variants={item}
+            className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto"
+          >
+            {language === 'en' 
+              ? 'A powerful, intuitive platform for managing your projects and tasks with advanced analytics and progress tracking.'
+              : 'Una plataforma potente e intuitiva para gestionar tus proyectos y tareas con análisis avanzados y seguimiento de progreso.'}
+          </motion.p>
+          
+          <motion.div 
+            variants={item}
+            className="flex flex-wrap gap-4 justify-center mb-16"
+          >
+            <Button
+              onClick={() => navigate("/login")}
+              size="lg"
+              className="relative group overflow-hidden"
+            >
+              <span className="relative z-10 flex items-center">
+                {language === 'en' ? 'Get Started' : 'Comenzar'} 
+                <ChevronRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </span>
+              <motion.div 
+                className="absolute inset-0 bg-primary"
+                initial={false}
+                animate={{ scale: 1 }}
+                whileHover={{ scale: 1.1 }}
+                transition={{ duration: 0.2 }}
+              />
+            </Button>
+            
+            <Button
+              onClick={() => navigate("/register")}
+              variant="outline"
+              size="lg"
+              className="border-primary/50 hover:border-primary/80 transition-colors"
+            >
+              {language === 'en' ? 'Sign Up Free' : 'Registrarse Gratis'}
+            </Button>
+          </motion.div>
+          
+          <motion.div
+            variants={item}
+            className="grid grid-cols-1 md:grid-cols-2 gap-6"
+          >
+            {features.map((feature, i) => (
+              <motion.div
+                key={i}
+                className="bg-secondary/30 backdrop-blur-md border border-border/30 p-6 rounded-xl hover:glow-border-primary transition-all duration-300"
+                whileHover={{ y: -5, transition: { duration: 0.2 } }}
+              >
+                <div className="rounded-full bg-background/60 w-10 h-10 flex items-center justify-center mb-4">
+                  {feature.icon}
+                </div>
+                <h3 className="text-lg font-medium mb-2">{feature.title}</h3>
+                <p className="text-muted-foreground">{feature.description}</p>
+              </motion.div>
+            ))}
+          </motion.div>
         </motion.div>
-      </motion.div>
+      </div>
+      
+      {/* Footer */}
+      <motion.footer 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1, duration: 0.5 }}
+        className="relative z-10 p-6 text-center text-sm text-muted-foreground"
+      >
+        <p>© 2023 Execute. {language === 'en' ? 'All rights reserved.' : 'Todos los derechos reservados.'}</p>
+      </motion.footer>
+      
+      {/* Grid overlay for futuristic effect */}
+      <div className="fixed inset-0 bg-grid-pattern opacity-5 pointer-events-none" />
     </div>
   );
 };
