@@ -1,12 +1,14 @@
 
 import React from "react";
-import { Bell, Search, User } from "lucide-react";
+import { Bell, Search, LogOut } from "lucide-react";
 import { motion } from "framer-motion";
 import { useLanguage } from "../../hooks/useLanguage";
 import { availableLanguages } from "../../utils/localization";
+import { useAuth } from "@/hooks/useAuth";
 
 const Navbar = () => {
   const { language, setLanguage, t } = useLanguage();
+  const { logout } = useAuth();
 
   return (
     <motion.header
@@ -54,9 +56,11 @@ const Navbar = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="p-1 rounded-full bg-primary/10 border border-primary/20"
+            className="p-2 rounded-full bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 text-red-500 transition-colors"
+            onClick={logout}
+            title={language === 'en' ? 'Logout' : 'Cerrar sesión'}
           >
-            <User size={24} className="text-primary" />
+            <LogOut size={18} />
           </motion.button>
         </div>
       </div>
