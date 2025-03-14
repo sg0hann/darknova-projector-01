@@ -15,7 +15,7 @@ import {
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const sidebarLinks = [
-  { path: "/", icon: LayoutDashboard, label: "dashboard" },
+  { path: "/dashboard", icon: LayoutDashboard, label: "dashboard" },
   { path: "/projects", icon: FolderKanban, label: "projects" },
   { path: "/analytics", icon: BarChart3, label: "analytics" },
   { path: "/settings", icon: Settings, label: "settings" },

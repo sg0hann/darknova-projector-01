@@ -25,9 +25,17 @@ export const useAuth = () => {
     navigate("/");
   };
 
+  // If user is authenticated and tries to access root, redirect to dashboard
+  const redirectToDashboard = () => {
+    if (isAuthenticated) {
+      navigate("/dashboard");
+    }
+  };
+
   return {
     user,
     isAuthenticated,
-    logout
+    logout,
+    redirectToDashboard
   };
 };
