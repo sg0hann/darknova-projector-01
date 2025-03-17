@@ -1,8 +1,8 @@
 
-import React from "react";
+import React, { useCallback } from "react";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-import { hslToHex, hexToHsl } from "@/utils/colorUtils";
+import { hslToHex } from "@/utils/colorUtils";
 
 interface ColorPickerProps {
   label: string;

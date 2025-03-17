@@ -12,21 +12,14 @@ import { hslToHex } from "@/utils/colorUtils";
 const ThemePanel: React.FC = () => {
   const { t } = useLanguage();
   const { themeColors, applyTheme, resetTheme } = useTheme();
-  const [tempColors, setTempColors] = React.useState({ ...themeColors });
   
-  const handleColorChange = (key: keyof typeof tempColors, value: string) => {
-    setTempColors(prev => ({ ...prev, [key]: value }));
+  // We no longer need tempColors state since we'll apply changes immediately
+  
+  const handleColorChange = (key: keyof typeof themeColors, value: string) => {
+    // Apply theme changes immediately when slider changes
+    applyTheme({ ...themeColors, [key]: value });
   };
   
-  const handleApplyTheme = () => {
-    applyTheme(tempColors);
-  };
-  
-  const handleResetTheme = () => {
-    resetTheme();
-    setTempColors({ ...themeColors });
-  };
-
   return (
     <div className="space-y-6">
       <div>
@@ -39,25 +32,25 @@ const ThemePanel: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <ColorPicker 
           label="Primary Color" 
-          value={tempColors.primary}
+          value={themeColors.primary}
           onChange={(value) => handleColorChange('primary', value)}
         />
         
         <ColorPicker 
           label="Accent Color" 
-          value={tempColors.accent}
+          value={themeColors.accent}
           onChange={(value) => handleColorChange('accent', value)}
         />
         
         <ColorPicker 
           label="Background" 
-          value={tempColors.background1}
+          value={themeColors.background1}
           onChange={(value) => handleColorChange('background1', value)}
         />
         
         <ColorPicker 
           label="Card Background" 
-          value={tempColors.background2}
+          value={themeColors.background2}
           onChange={(value) => handleColorChange('background2', value)}
         />
       </div>
@@ -68,17 +61,12 @@ const ThemePanel: React.FC = () => {
           <div>
             <h4 className="text-xs mb-2 text-muted-foreground">UI Elements</h4>
             <div className="flex flex-wrap gap-2">
-              <Button
-                style={{ 
-                  '--primary': tempColors.primary,
-                  '--accent': tempColors.accent 
-                } as React.CSSProperties}
-              >
+              <Button>
                 Button
               </Button>
               <Badge 
                 style={{ 
-                  backgroundColor: `hsl(${tempColors.primary})`
+                  backgroundColor: `hsl(${themeColors.primary})`
                 }}
               >
                 Badge
@@ -91,8 +79,8 @@ const ThemePanel: React.FC = () => {
             <Card 
               className="p-4" 
               style={{ 
-                backgroundColor: `hsla(${tempColors.background2}, 0.8)`,
-                borderColor: `hsla(${tempColors.primary}, 0.2)`
+                backgroundColor: `hsla(${themeColors.background2}, 0.8)`,
+                borderColor: `hsla(${themeColors.primary}, 0.2)`
               }}
             >
               <h3 className="text-sm font-medium">Card Title</h3>
@@ -105,16 +93,13 @@ const ThemePanel: React.FC = () => {
         
         <Alert className="mb-6">
           <AlertDescription>
-            Color changes will affect the entire application and will be saved to your browser.
+            Color changes are applied immediately and saved to your browser automatically.
           </AlertDescription>
         </Alert>
         
-        <div className="flex justify-end space-x-3">
-          <Button variant="outline" onClick={handleResetTheme}>
+        <div className="flex justify-end">
+          <Button variant="outline" onClick={resetTheme}>
             Reset to Default
-          </Button>
-          <Button onClick={handleApplyTheme}>
-            Apply Theme
           </Button>
         </div>
       </div>
