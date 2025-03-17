@@ -5,6 +5,7 @@ import { User, Globe, Moon, Bell } from "lucide-react";
 import { useLanguage } from "../hooks/useLanguage";
 import { fadeIn, pageTransition } from "../utils/animations";
 import ThemePanel from "@/components/settings/ThemePanel";
+import LanguageToggle from "@/components/ui/LanguageToggle";
 
 const Settings = () => {
   const { t } = useLanguage();
