@@ -14,10 +14,36 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   
   return (
     <div className="flex min-h-screen bg-background relative overflow-hidden">
-      {/* Background gradient effects */}
+      {/* Background gradient elements with subtle animation */}
       <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-[-300px] right-[-300px] w-[600px] h-[600px] rounded-full bg-primary/10 blur-[100px]" />
-        <div className="absolute bottom-[-300px] left-[-300px] w-[600px] h-[600px] rounded-full bg-accent/10 blur-[100px]" />
+        <motion.div 
+          initial={{ x: -100, y: -100, opacity: 0.5 }}
+          animate={{ 
+            x: [-100, 50, -150, -100],
+            y: [-100, -200, -50, -100],
+            opacity: [0.5, 0.7, 0.5, 0.5],
+          }}
+          transition={{ 
+            repeat: Infinity, 
+            duration: 25,
+            ease: "easeInOut"
+          }}
+          className="absolute top-0 left-0 w-[600px] h-[600px] rounded-full bg-primary/10 blur-[120px]" 
+        />
+        <motion.div 
+          initial={{ x: 100, y: 100, opacity: 0.5 }}
+          animate={{ 
+            x: [100, 150, 0, 100],
+            y: [100, 0, 200, 100],
+            opacity: [0.5, 0.7, 0.5, 0.5],
+          }}
+          transition={{ 
+            repeat: Infinity, 
+            duration: 20,
+            ease: "easeInOut"
+          }}
+          className="absolute bottom-0 right-0 w-[600px] h-[600px] rounded-full bg-accent/10 blur-[120px]" 
+        />
       </div>
       
       <Sidebar />
