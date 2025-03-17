@@ -50,6 +50,8 @@ const translations: Translations = {
     taskCompletion: "Task Completion",
     projectProgress: "Project Progress",
     timeSpent: "Time Spent",
+    // Language selector
+    selectLanguage: "Select Language",
   },
   es: {
     // Navigation
@@ -95,7 +97,10 @@ const translations: Translations = {
     taskCompletion: "Completado de Tareas",
     projectProgress: "Progreso de Proyectos",
     timeSpent: "Tiempo Empleado",
+    // Language selector
+    selectLanguage: "Seleccionar Idioma",
   },
+  // Structure ready for adding more languages
 };
 
 export const getTranslation = (
@@ -109,6 +114,7 @@ export const getTranslation = (
 export const availableLanguages = [
   { code: "en", name: "English" },
   { code: "es", name: "Español" },
+  // Easy to add more languages here
 ];
 
 export default translations;
