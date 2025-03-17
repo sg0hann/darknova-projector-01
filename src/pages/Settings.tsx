@@ -65,11 +65,11 @@ const Settings = () => {
             <>
               <h2 className="text-xl font-medium mb-4">{t("language")}</h2>
               <p className="text-muted-foreground mb-6">
-                Select your preferred language for the user interface.
+                {t("selectLanguage")}
               </p>
               
               <div className="mb-6">
-                <h3 className="text-sm font-medium mb-2">Interface Language</h3>
+                <h3 className="text-sm font-medium mb-2">{t("interfaceLanguage")}</h3>
                 <div className="flex items-center gap-2">
                   {/* Show LanguageToggle component */}
                   <div className="inline-block">
@@ -79,11 +79,9 @@ const Settings = () => {
               </div>
               
               <div className="border-t border-border pt-6">
-                <h3 className="text-sm font-medium mb-3">Language Details</h3>
+                <h3 className="text-sm font-medium mb-3">{t("languageDetails")}</h3>
                 <p className="text-sm text-muted-foreground">
-                  The application will automatically use your selected language for all interface elements, 
-                  including navigation, buttons, forms, and content. Your language preference is stored 
-                  in your browser and will be remembered for future visits.
+                  {t("languageDescription")}
                 </p>
               </div>
             </>

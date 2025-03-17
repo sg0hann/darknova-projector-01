@@ -3,6 +3,7 @@ import React, { useCallback } from "react";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { hslToHex } from "@/utils/colorUtils";
+import { useLanguage } from "@/hooks/useLanguage";
 
 interface ColorPickerProps {
   label: string;
@@ -11,6 +12,8 @@ interface ColorPickerProps {
 }
 
 const ColorPicker: React.FC<ColorPickerProps> = ({ label, value, onChange }) => {
+  const { t } = useLanguage();
+  
   // Parse HSL values
   const [h, s, l] = value.split(" ").map(v => parseFloat(v));
 
@@ -44,7 +47,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ label, value, onChange }) => 
       <div className="space-y-3">
         <div className="space-y-1">
           <div className="flex justify-between">
-            <span className="text-xs">Hue</span>
+            <span className="text-xs">{t("hue")}</span>
             <span className="text-xs">{Math.round(h)}°</span>
           </div>
           <Slider 
@@ -59,7 +62,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ label, value, onChange }) => 
         
         <div className="space-y-1">
           <div className="flex justify-between">
-            <span className="text-xs">Saturation</span>
+            <span className="text-xs">{t("saturation")}</span>
             <span className="text-xs">{Math.round(s)}%</span>
           </div>
           <Slider 
@@ -74,7 +77,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ label, value, onChange }) => 
         
         <div className="space-y-1">
           <div className="flex justify-between">
-            <span className="text-xs">Lightness</span>
+            <span className="text-xs">{t("lightness")}</span>
             <span className="text-xs">{Math.round(l)}%</span>
           </div>
           <Slider 
