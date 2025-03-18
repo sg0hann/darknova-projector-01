@@ -1,11 +1,13 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Draggable from "react-draggable";
 import { 
   X, 
   Image as ImageIcon, 
   Calendar as CalendarIcon,
-  Clipboard 
+  Clipboard,
+  Move
 } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
 import { Input } from "@/components/ui/input";
@@ -102,115 +104,123 @@ const NewProjectModal: React.FC<NewProjectModalProps> = ({
             onClick={onClose}
           />
           
-          {/* Modal */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            transition={{ duration: 0.2 }}
-            className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-card border border-border rounded-lg shadow-lg z-50 p-6"
-            onClick={(e) => e.stopPropagation()}
+          {/* Modal with Draggable */}
+          <Draggable
+            handle=".modal-handle"
+            defaultPosition={{x: window.innerWidth / 2 - 200, y: window.innerHeight / 2 - 200}}
           >
-            <div className="flex justify-between items-center mb-5">
-              <h2 className="text-xl font-bold">{t("newProject")}</h2>
-              <button
-                onClick={onClose}
-                className="text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <X size={20} />
-              </button>
-            </div>
-            
-            <form onSubmit={handleSubmit}>
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="title">{t("projectTitle")} *</Label>
-                  <Input
-                    id="title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    placeholder={t("projectTitlePlaceholder")}
-                    required
-                  />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+              className="fixed z-[51] w-full max-w-md bg-card border border-border rounded-lg shadow-lg p-6"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex justify-between items-center mb-5 modal-handle cursor-move">
+                <div className="flex items-center gap-2">
+                  <Move size={16} className="text-muted-foreground" />
+                  <h2 className="text-xl font-bold">{t("newProject")}</h2>
                 </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="description">{t("projectDescription")}</Label>
-                  <textarea
-                    id="description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    placeholder={t("projectDescriptionPlaceholder")}
-                    className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none min-h-[100px]"
-                  />
-                </div>
-                
-                <div className="grid grid-cols-2 gap-4">
+                <button
+                  onClick={onClose}
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+              
+              <form onSubmit={handleSubmit}>
+                <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="start-date">{t("startDate")}</Label>
-                    <div className="relative">
-                      <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground h-4 w-4" />
-                      <Input
-                        id="start-date"
-                        type="date"
-                        value={startDate}
-                        onChange={(e) => setStartDate(e.target.value)}
-                        className="pl-10"
-                      />
+                    <Label htmlFor="title">{t("projectTitle")} *</Label>
+                    <Input
+                      id="title"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                      placeholder={t("projectTitlePlaceholder")}
+                      required
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="description">{t("projectDescription")}</Label>
+                    <textarea
+                      id="description"
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      placeholder={t("projectDescriptionPlaceholder")}
+                      className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none min-h-[100px]"
+                    />
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="start-date">{t("startDate")}</Label>
+                      <div className="relative">
+                        <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                        <Input
+                          id="start-date"
+                          type="date"
+                          value={startDate}
+                          onChange={(e) => setStartDate(e.target.value)}
+                          className="pl-10"
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="due-date">{t("dueDate")} *</Label>
+                      <div className="relative">
+                        <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                        <Input
+                          id="due-date"
+                          type="date"
+                          value={dueDate}
+                          onChange={(e) => setDueDate(e.target.value)}
+                          min={minDueDate}
+                          className="pl-10"
+                          required
+                        />
+                      </div>
                     </div>
                   </div>
                   
                   <div className="space-y-2">
-                    <Label htmlFor="due-date">{t("dueDate")} *</Label>
+                    <Label htmlFor="thumbnail">{t("projectThumbnail")}</Label>
                     <div className="relative">
-                      <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                      <ImageIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground h-4 w-4" />
                       <Input
-                        id="due-date"
-                        type="date"
-                        value={dueDate}
-                        onChange={(e) => setDueDate(e.target.value)}
-                        min={minDueDate}
+                        id="thumbnail"
+                        type="url"
+                        value={thumbnailUrl}
+                        onChange={(e) => setThumbnailUrl(e.target.value)}
+                        placeholder={t("projectThumbnailUrlPlaceholder")}
                         className="pl-10"
-                        required
                       />
                     </div>
                   </div>
                 </div>
                 
-                <div className="space-y-2">
-                  <Label htmlFor="thumbnail">{t("projectThumbnail")}</Label>
-                  <div className="relative">
-                    <ImageIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground h-4 w-4" />
-                    <Input
-                      id="thumbnail"
-                      type="url"
-                      value={thumbnailUrl}
-                      onChange={(e) => setThumbnailUrl(e.target.value)}
-                      placeholder={t("projectThumbnailUrlPlaceholder")}
-                      className="pl-10"
-                    />
-                  </div>
+                <div className="flex justify-end gap-3 mt-6">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={onClose}
+                  >
+                    {t("cancel")}
+                  </Button>
+                  <Button
+                    type="submit"
+                    variant="gradient"
+                  >
+                    <Clipboard className="mr-2" />
+                    {t("createProject")}
+                  </Button>
                 </div>
-              </div>
-              
-              <div className="flex justify-end gap-3 mt-6">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={onClose}
-                >
-                  {t("cancel")}
-                </Button>
-                <Button
-                  type="submit"
-                  variant="gradient"
-                >
-                  <Clipboard className="mr-2" />
-                  {t("createProject")}
-                </Button>
-              </div>
-            </form>
-          </motion.div>
+              </form>
+            </motion.div>
+          </Draggable>
         </>
       )}
     </AnimatePresence>
