@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Plus, Clock, Calendar } from "lucide-react";
@@ -8,6 +7,7 @@ import ProjectGrid from "../components/dashboard/ProjectGrid";
 import ActivityTracker from "../components/dashboard/ActivityTracker";
 import NewProjectModal from "../components/projects/NewProjectModal";
 import { fadeIn, pageTransition, staggerContainer } from "../utils/animations";
+import { Button } from "@/components/ui/button";
 
 // Mock data for upcoming tasks
 const upcomingTasks = [
@@ -82,15 +82,15 @@ const Dashboard = () => {
           >
             <div className="flex justify-between items-center mb-4">
               <h2 className="font-medium">{t("activeProjects")}</h2>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="flex items-center text-sm bg-primary text-white px-3 py-2 rounded-md hover:bg-primary/90 transition-colors"
+              <Button
                 onClick={() => setIsNewProjectModalOpen(true)}
+                variant="gradient"
+                size="sm"
+                className="flex items-center gap-1.5"
               >
-                <Plus size={16} className="mr-1.5" />
+                <Plus size={16} />
                 {t("newProject")}
-              </motion.button>
+              </Button>
             </div>
             <ProjectGrid limit={2} />
           </motion.div>

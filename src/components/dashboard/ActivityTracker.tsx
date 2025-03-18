@@ -26,9 +26,14 @@ const generateMockData = () => {
       const randomFactor = Math.random();
       const activityCount = Math.floor(randomFactor * 10 * recencyBoost);
       
+      // Create date for this cell (for tooltip)
+      const date = new Date();
+      date.setDate(date.getDate() - ((weeks - w - 1) * 7 + (6 - d)));
+      
       week.push({
         count: activityCount,
         color: getActivityColor(activityCount),
+        date: date,
       });
     }
     data.push(week);
@@ -39,13 +44,42 @@ const generateMockData = () => {
 
 const activityData = generateMockData();
 
+// Helper to get month labels
+const getMonthLabels = () => {
+  const months = [];
+  const today = new Date();
+  
+  // Start from 5 months ago
+  for (let i = 5; i >= 0; i--) {
+    const month = new Date(today);
+    month.setMonth(today.getMonth() - i);
+    months.push({
+      name: month.toLocaleString('default', { month: 'short' }),
+      index: month.getMonth()
+    });
+  }
+  
+  return months;
+};
+
 const ActivityTracker: React.FC = () => {
   const { t } = useLanguage();
+  const monthLabels = getMonthLabels();
   
   // Helper to get day label
   const getDayLabel = (dayIndex: number) => {
     const days = ["S", "M", "T", "W", "T", "F", "S"];
     return days[dayIndex];
+  };
+
+  // Format date for tooltip
+  const formatDateForTooltip = (date: Date) => {
+    return date.toLocaleDateString(undefined, { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
   };
 
   return (
@@ -55,12 +89,29 @@ const ActivityTracker: React.FC = () => {
       animate="visible"
       className="bg-card border border-border rounded-lg p-4"
     >
-      <h3 className="font-medium mb-4">{t("activity")}</h3>
+      <h3 className="font-medium mb-6">{t("activity")}</h3>
       
       <div className="overflow-x-auto pb-2">
+        {/* Month labels row */}
+        <div className="flex min-w-[700px] mb-1 pl-8">
+          {monthLabels.map((month, index) => (
+            <div 
+              key={index} 
+              className="text-xs text-muted-foreground"
+              style={{ 
+                flex: index === 0 || index === monthLabels.length - 1 ? '0 0 auto' : '1 0 auto',
+                paddingLeft: index === 0 ? '0' : '',
+                textAlign: index === 0 ? 'left' : index === monthLabels.length - 1 ? 'right' : 'center'
+              }}
+            >
+              {month.name}
+            </div>
+          ))}
+        </div>
+        
         <div className="flex min-w-[700px]">
           {/* Day labels */}
-          <div className="flex flex-col pr-2 pt-6">
+          <div className="flex flex-col pr-2 pt-1">
             {[0, 1, 2, 3, 4, 5, 6].map((day) => (
               <div key={day} className="h-[14px] text-xs text-muted-foreground mb-1">
                 {getDayLabel(day)}
@@ -77,7 +128,7 @@ const ActivityTracker: React.FC = () => {
                     key={`${weekIndex}-${dayIndex}`}
                     className={`w-[14px] h-[14px] rounded-sm ${day.color} cursor-pointer`}
                     whileHover={{ scale: 1.2 }}
-                    title={`${day.count} activities`}
+                    title={`${day.count} activities on ${formatDateForTooltip(day.date)}`}
                   />
                 ))}
               </div>
@@ -86,7 +137,7 @@ const ActivityTracker: React.FC = () => {
         </div>
       </div>
       
-      <div className="flex items-center justify-end mt-2 text-xs text-muted-foreground">
+      <div className="flex items-center justify-end mt-4 text-xs text-muted-foreground">
         <span className="mr-1">Less</span>
         <div className="flex space-x-1">
           <div className="w-[10px] h-[10px] rounded-sm bg-secondary/40"></div>
