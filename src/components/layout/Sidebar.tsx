@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useLanguage } from "../../hooks/useLanguage";
 import { 
@@ -24,10 +24,24 @@ const sidebarLinks = [
 const Sidebar = () => {
   const { t } = useLanguage();
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(!isMobile);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
+  };
+  
+  const handleNewProject = () => {
+    navigate("/projects");
+    // We use a timeout to give time for navigation to complete
+    setTimeout(() => {
+      // Dispatch a custom event that Projects page will listen for
+      window.dispatchEvent(new CustomEvent("open-new-project-modal"));
+    }, 100);
+    
+    if (isMobile) {
+      setIsOpen(false);
+    }
   };
 
   const sidebarVariants = {
@@ -134,7 +148,10 @@ const Sidebar = () => {
 
           {isOpen && (
             <div className="p-4 border-t border-border mt-auto">
-              <button className="w-full flex items-center justify-center py-2 px-4 rounded-md bg-primary hover:bg-primary/90 text-white font-medium transition-colors">
+              <button 
+                className="w-full flex items-center justify-center py-2 px-4 rounded-md bg-primary hover:bg-primary/90 text-white font-medium transition-colors"
+                onClick={handleNewProject}
+              >
                 <PlusCircle size={18} className="mr-2" />
                 {t("newProject")}
               </button>
